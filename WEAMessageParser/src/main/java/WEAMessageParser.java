@@ -19,6 +19,10 @@ public class WEAMessageParser {
             System.out.println(model.getMessageNumber());
             System.out.println(model.getSender());
             System.out.println(model.getAlertInfo().getExpires());
+            System.out.println(model.getAlertInfo().getAlertArea().get(0).getAreaDescription());
+            System.out.println(model.getAlertInfo().getAlertArea().get(0).getGeocodeList().get(0));
+        } else {
+            System.out.println("Parsing Error Occured");
         }
     }
 }
