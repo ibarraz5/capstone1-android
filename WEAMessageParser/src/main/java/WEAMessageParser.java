@@ -16,8 +16,9 @@ public class WEAMessageParser {
         }
 
         if (model != null){
-            System.out.println(model.getCMAC_message_number());
-            System.out.println(model.getCMAC_sender());
+            System.out.println(model.getMessageNumber());
+            System.out.println(model.getSender());
+            System.out.println(model.getAlertInfo().getExpires());
         }
     }
 }
