@@ -39,7 +39,6 @@ public class WEAMessageParser {
 
             Map<String, List<String>> map = con.getHeaderFields();
             getUpload = new URL(map.get("Location").get(0));
-            System.out.println(map.get("Location").get(0));
         } catch (Exception e) {
             e.printStackTrace();
         }
