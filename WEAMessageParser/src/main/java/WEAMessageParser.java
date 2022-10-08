@@ -2,15 +2,17 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import wea.message.model.WEAMessageModel;
 
 import java.io.File;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class WEAMessageParser {
     public static void main(String args[]) {
         WEAMessageModel model = null;
-
         try {
+            URL getMessage = new URL("http://localhost:8080/wea/getMessage");
             XmlMapper mapper = new XmlMapper();
-            model = mapper.readValue(new File("src/main/resources/sampleMessage.xml"),
-                    WEAMessageModel.class);
+            model = mapper.readValue(getMessage, WEAMessageModel.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -22,7 +24,7 @@ public class WEAMessageParser {
             System.out.println(model.getAlertInfo().getAlertArea().get(0).getAreaDescription());
             System.out.println(model.getAlertInfo().getAlertArea().get(0).getGeocodeList().get(0));
         } else {
-            System.out.println("Parsing Error Occured");
+            System.out.println("Parsing Error Occurred");
         }
     }
 }
