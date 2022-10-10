@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.wea.mockapp.databinding.FragmentFirstBinding;
+import com.wea.mockapp.databinding.HistoryFragmentBinding;
 
-public class FirstFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
-    private FragmentFirstBinding binding;
+    private HistoryFragmentBinding binding;
 
     @Override
     public View onCreateView(
@@ -21,7 +21,7 @@ public class FirstFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        binding = HistoryFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
@@ -29,11 +29,11 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                NavHostFragment.findNavController(HistoryFragment.this)
+                        .navigate(R.id.action_HistoryFragment_to_HomeFragment);
             }
         });
     }
