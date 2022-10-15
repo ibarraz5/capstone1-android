@@ -1,7 +1,7 @@
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import wea.message.model.CollectedUserData;
 import wea.message.model.WEAMessageModel;
-import wea.message.model.wrapper.UploadWrapper;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WEAMessageParser {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws InterruptedException {
         WEAMessageModel model = null;
         HttpURLConnection con;
 
@@ -22,8 +22,13 @@ public class WEAMessageParser {
             e.printStackTrace();
         }
 
-        CollectedUserData userData = new CollectedUserData(LocalDateTime.now(), "048151");
-        UploadWrapper wrapper = new UploadWrapper(userData, model);
+        CollectedUserData userData = new CollectedUserData(LocalDateTime.now(), "048151",
+                model.getMessageNumber(), model.getCapIdentifier());
+
+        //simulate short delay between receipt and display
+        Thread.sleep(15);
+        userData.setTimeDisplayed(LocalDateTime.now());
+        userData.setLocationDisplayed("048151");
 
         URL getUpload = null;
         try {
@@ -35,7 +40,7 @@ public class WEAMessageParser {
 
             XmlMapper mapper = new XmlMapper();
             mapper.findAndRegisterModules();
-            mapper.writeValue(con.getOutputStream(), wrapper);
+            mapper.writeValue(con.getOutputStream(), userData);
 
             Map<String, List<String>> map = con.getHeaderFields();
             getUpload = new URL(map.get("Location").get(0));
@@ -46,7 +51,8 @@ public class WEAMessageParser {
         if (getUpload != null) {
             try {
                 XmlMapper mapper = new XmlMapper();
-                UploadWrapper response = mapper.readValue(getUpload, UploadWrapper.class);
+                mapper.enable(SerializationFeature.INDENT_OUTPUT);
+                CollectedUserData response = mapper.readValue(getUpload, CollectedUserData.class);
 
                 String responseString = mapper.writeValueAsString(response);
                 System.out.println(responseString);
