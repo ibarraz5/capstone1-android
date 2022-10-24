@@ -45,7 +45,4 @@ public class WEAMessageModel {
         return capIdentifier;
     }
 
-    public WEAMessageAlertInfo getAlertInfo() {
-        return alertInfo;
-    }
 }
