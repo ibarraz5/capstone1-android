@@ -9,7 +9,7 @@
         android:id="@+id/HomeFragment"
         android:name="com.wea.mockapp.HomeFragment"
         android:label="@string/home_fragment_label"
-        tools:layout="@layout/history_button">
+        tools:layout="@layout/home_fragment">
 
         <action
             android:id="@+id/action_HomeFragment_to_HistoryFragment"
