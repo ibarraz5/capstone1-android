@@ -1,7 +1,12 @@
+package com.wea.local;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
     private static final String DB_NAME = "cmac_device_local";
@@ -41,13 +46,34 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<CMACModal> readCMACS() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursorCMAC = db.rawQuery("SELECT * FROM " + CMAC_MESSAGE_TABLE_NAME, null);
+
+        ArrayList<CMACModal> cmacModalArrayList = new ArrayList<>();
+
+        if (cursorCMAC.moveToFirst()) {
+            do {
+                cmacModalArrayList.add(new CMACModal(cursorCMAC.getString(1),
+                        cursorCMAC.getString(2),
+                        cursorCMAC.getString(3),
+                        cursorCMAC.getString(4),
+                        cursorCMAC.getString(5)));
+            } while (cursorCMAC.moveToNext());
+        }
+
+        cursorCMAC.close();
+        return cmacModalArrayList;
+    }
+
     public DBHandler(Context context){
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CMAC_MESSAGE_TABLE_NAME);
         onCreate(db);
     }
 

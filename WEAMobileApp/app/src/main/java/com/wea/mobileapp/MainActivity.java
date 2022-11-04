@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.wea.mobileapp.databinding.ActivityMainBinding;
+import com.wea.local.DBHandler;
 
 import android.view.Menu;
 import android.view.MenuItem;
