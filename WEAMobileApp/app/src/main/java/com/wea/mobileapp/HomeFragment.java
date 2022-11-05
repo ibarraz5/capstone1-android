@@ -9,11 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.wea.local.WEAMessageParserAndroid;
 import com.wea.mobileapp.databinding.HomeFragmentBinding;
 
 public class HomeFragment extends Fragment {
 
     private HomeFragmentBinding binding;
+    // NOT SURE IF THIS IS NECESSARY?
+    private WEAMessageParserAndroid parse;
 
     @Override
     public View onCreateView(
@@ -34,6 +37,10 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(HomeFragment.this)
                         .navigate(R.id.action_HomeFragment_to_HistoryFragment);
+
+                //I WAS GONNA RUN THE PARSING METHOD HERE?
+
+
             }
         });
     }
