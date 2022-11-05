@@ -15,25 +15,35 @@ import com.wea.mobileapp.databinding.HomeFragmentBinding;
 public class HomeFragment extends Fragment {
 
     private HomeFragmentBinding binding;
-    // NOT SURE IF THIS IS NECESSARY?
-    private WEAMessageParserAndroid parse;
+    private WEAMessageParserAndroid parse = new WEAMessageParserAndroid();
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = HomeFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    parse.parseMessage();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
         try {
-            parse.parseMessage();
+            thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
