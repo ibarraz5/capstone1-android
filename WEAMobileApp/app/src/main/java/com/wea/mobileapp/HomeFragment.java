@@ -32,17 +32,21 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        try {
+            parse.parseMessage();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         binding.historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(HomeFragment.this)
                         .navigate(R.id.action_HomeFragment_to_HistoryFragment);
 
-                //I WAS GONNA RUN THE PARSING METHOD HERE?
-
-
             }
         });
+
     }
 
     @Override

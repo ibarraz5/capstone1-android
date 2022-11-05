@@ -18,7 +18,7 @@ public class WEAMessageAlertInfo {
 
     @JsonProperty("CMAC_Alert_Area")
     @JacksonXmlElementWrapper(useWrapping = false)
-    private List<wea.message.model.WEAMessageAlertArea> alertAreaList;
+    private List<com.wea.local.model.WEAMessageAlertArea> alertAreaList;
 
     public String getExpires() {
         return expires;
@@ -28,7 +28,7 @@ public class WEAMessageAlertInfo {
         return senderName;
     }
 
-    public List<wea.message.model.WEAMessageAlertArea> getAlertArea() {
+    public List<com.wea.local.model.WEAMessageAlertArea> getAlertArea() {
         return alertAreaList;
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 
 
 public class WEAMessageParserAndroid {
-    public static void main(String args[]) throws InterruptedException {
+    public static void parseMessage() throws InterruptedException {
         WEAMessageModel model = null;
         HttpURLConnection con;
 
