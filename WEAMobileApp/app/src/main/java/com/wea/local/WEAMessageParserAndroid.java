@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-
 public class WEAMessageParserAndroid {
     public static void parseMessage() throws InterruptedException {
         WEAMessageModel model = null;

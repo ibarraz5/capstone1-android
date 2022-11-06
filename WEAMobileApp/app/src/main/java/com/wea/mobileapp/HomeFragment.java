@@ -33,8 +33,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    parse.parseMessage();
-                } catch (InterruptedException e) {
+                    //TODO: uncomment these lines once the parse is updated
+                    //parse.parseMessage();
+                //} catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
