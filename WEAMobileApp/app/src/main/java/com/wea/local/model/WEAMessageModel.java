@@ -1,28 +1,26 @@
 package com.wea.local.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JacksonXmlRootElement(localName = "CMAC_Alert_Attributes")
+@Root
 public class WEAMessageModel {
-    @JsonProperty("CMAC_message_number")
+    @Element(name = "CMAC_message_number")
     private String messageNumber;
 
-    @JsonProperty("CMAC_sender")
+    @Element(name = "CMAC_sender")
     private String sender;
 
-    @JsonProperty("CMAC_sent_date_time")
+    @Element(name = "CMAC_sent_date_time")
     private String sentDateTime;
 
-    @JsonProperty("CMAC_message_type")
+    @Element(name = "CMAC_message_type")
     private String messageType;
 
-    @JsonProperty("CMAC_cap_identifier")
+    @Element(name = "CMAC_cap_identifier")
     private String capIdentifier;
 
-    @JsonProperty("CMAC_alert_info")
+    @Element(name = "CMAC_alert_info")
     private WEAMessageAlertInfo alertInfo;
 
     public String getMessageNumber() {

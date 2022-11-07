@@ -1,23 +1,20 @@
 package com.wea.local.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 import java.util.List;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JacksonXmlRootElement(localName = "CMAC_alert_info")
+@Root
+@Element(name = "CMAC_alert_info")
 public class WEAMessageAlertInfo {
-    @JsonProperty("CMAC_expires_date_time")
+    @Element(name = "CMAC_expires_date_time")
     private String expires;
 
-    @JsonProperty("CMAC_sender_name")
+    @Element(name = "CMAC_sender_name")
     private String senderName;
 
-    @JsonProperty("CMAC_Alert_Area")
-    @JacksonXmlElementWrapper(useWrapping = false)
+    @Element(name = "CMAC_Alert_Area")
+    //@JacksonXmlElementWrapper(useWrapping = false)
     private List<com.wea.local.model.WEAMessageAlertArea> alertAreaList;
 
     public String getExpires() {

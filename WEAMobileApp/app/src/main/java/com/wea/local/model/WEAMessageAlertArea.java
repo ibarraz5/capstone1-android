@@ -1,26 +1,24 @@
 package com.wea.local.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JacksonXmlRootElement(localName = "CMAC_Alert_Area")
+@Root
+@Element(name = "CMAC_Alert_Area")
 public class WEAMessageAlertArea {
-    @JsonProperty("CMAC_area_description")
+    @Element(name = "CMAC_area_description")
     private String areaDescription;
 
-    @JsonProperty("CMAC_polygon")
+    @Element(name = "CMAC_polygon")
     private String polygon;
 
-    @JsonProperty("CMAC_circle")
+    @Element(name = "CMAC_circle")
     private String circle;
 
-    @JsonProperty("CMAC_cmas_geocode")
-    @JacksonXmlElementWrapper(useWrapping = false)
+    @Element(name = "CMAC_cmas_geocode")
+    //@JacksonXmlElementWrapper(useWrapping = false)
     private List<String> geocodeList;
 
     public String getAreaDescription() {
