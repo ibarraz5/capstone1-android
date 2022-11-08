@@ -1,5 +1,6 @@
 package com.wea.mobileapp;
 
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.wea.local.CMACMessageParserAndroid;
 import com.wea.mobileapp.databinding.HomeFragmentBinding;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class HomeFragment extends Fragment {
 
     private HomeFragmentBinding binding;
-    private CMACMessageParserAndroid parse = new CMACMessageParserAndroid();
 
     @Override
     public View onCreateView(
@@ -32,12 +36,27 @@ public class HomeFragment extends Fragment {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                BufferedReader bufferedReader = null;
+                InputStreamReader inputStreamReader = null;
                 try {
-                    //TODO: uncomment these lines once the parse is updated
-                    parse.parseMessage();
-                //} catch (InterruptedException e) {
+                    //reads your local server ip address to use in API calls
+                    AssetManager assets = getContext().getApplicationContext().getAssets();
+                    inputStreamReader = new InputStreamReader(assets.open("server_address.dat"));
+                    bufferedReader = new BufferedReader(inputStreamReader);
+                    String address = bufferedReader.readLine();
+                    CMACMessageParserAndroid.parseMessage(address);
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    //close resources
+                    try {
+                        if (bufferedReader != null) {
+                            bufferedReader.close();
+                        }
+                        if (inputStreamReader != null) {
+                            inputStreamReader.close();
+                        }
+                    } catch (IOException e) {}
                 }
             }
         });

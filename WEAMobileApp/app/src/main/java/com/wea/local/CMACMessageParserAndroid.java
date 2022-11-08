@@ -1,5 +1,7 @@
 package com.wea.local;
 
+import android.util.Log;
+
 import com.wea.local.model.CollectedUserData;
 import com.wea.local.model.CMACMessageModel;
 
@@ -14,15 +16,14 @@ import java.util.Map;
 import java.util.Random;
 
 public class CMACMessageParserAndroid {
-    public static void parseMessage() throws InterruptedException {
+    public static void parseMessage(String address) throws InterruptedException {
         CMACMessageModel cmacMessage = null;
         HttpURLConnection con;
 
         try {
-            URL getMessage = new URL("http://localhost:8080/wea/getMessage");
+            URL getMessage = new URL("http://" + address + ":8080/wea/getMessage");
             Serializer serializer = new Persister();
             InputStream inputStream = getMessage.openStream();
-
             cmacMessage = serializer.read(CMACMessageModel.class, inputStream);
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +53,7 @@ public class CMACMessageParserAndroid {
 
         URL getUpload = null;
         try {
-            URL upload = new URL("http://localhost:8080/wea/upload");
+            URL upload = new URL("http://" + address + ":8080/wea/upload");
             con = (HttpURLConnection) upload.openConnection();
             con.setRequestMethod("PUT");
             con.setRequestProperty("Content-Type", "application/xml");
@@ -62,23 +63,21 @@ public class CMACMessageParserAndroid {
             serializer.write(userData, con.getOutputStream());
 
             Map<String, List<String>> map = con.getHeaderFields();
-            getUpload = new URL(map.get("Location").get(0));
-
+            getUpload = new URL(map.get("Location").get(0).replace("localhost", address));
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
 
         //confirm the message was uploaded using the received location header value
-        if (getUpload != null) {
-            try {
-                Serializer serializer = new Persister();
-                InputStream inputStream = getUpload.openStream();
+        try {
+            InputStream inputStream = getUpload.openStream();
+            Serializer serializer = new Persister();
+            CollectedUserData uploadedData = serializer.read(CollectedUserData.class, inputStream);
 
-                System.out.println(inputStream);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Log.i("Uploaded Message Number", uploadedData.getMessageNumber());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
+}
 }

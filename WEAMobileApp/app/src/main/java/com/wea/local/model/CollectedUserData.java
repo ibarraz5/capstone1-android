@@ -23,7 +23,7 @@ public class CollectedUserData {
     private String locationDisplayed;
     @Element(name = "CMAC_message_number")
     private String messageNumber;
-    @Element(name = "CMAC_cap_identifier")
+    @Element(name = "CMAC_cap_identifier", required = false)
     private String capIdentifier;
 
     public CollectedUserData() {}
