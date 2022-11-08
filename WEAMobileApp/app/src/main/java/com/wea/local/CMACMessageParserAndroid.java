@@ -9,7 +9,8 @@ import org.simpleframework.xml.core.Persister;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class CMACMessageParserAndroid {
@@ -42,9 +43,13 @@ public class CMACMessageParserAndroid {
 
         //set when and where the message was displayed on the device
         userData.setTimeDisplayed();
+        /*
+        TODO: similar to the constructor, this parameter should be replaced when we are able to
+        programmatically determine the user's location geocode, or the logic for that could simply
+        take place inside the method
+         */
         userData.setLocationDisplayed("048151");
 
-        /*
         URL getUpload = null;
         try {
             URL upload = new URL("http://localhost:8080/wea/upload");
@@ -53,27 +58,27 @@ public class CMACMessageParserAndroid {
             con.setRequestProperty("Content-Type", "application/xml");
             con.setDoOutput(true);
 
-            XmlMapper mapper = new XmlMapper();
-            mapper.findAndRegisterModules();
-            mapper.writeValue(con.getOutputStream(), userData);
+            Serializer serializer = new Persister();
+            serializer.write(userData, con.getOutputStream());
 
             Map<String, List<String>> map = con.getHeaderFields();
             getUpload = new URL(map.get("Location").get(0));
+
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
 
+        //confirm the message was uploaded using the received location header value
         if (getUpload != null) {
             try {
-                XmlMapper mapper = new XmlMapper();
-                mapper.enable(SerializationFeature.INDENT_OUTPUT);
-                CollectedUserData response = mapper.readValue(getUpload, CollectedUserData.class);
+                Serializer serializer = new Persister();
+                InputStream inputStream = getUpload.openStream();
 
-                String responseString = mapper.writeValueAsString(response);
-                System.out.println(responseString);
+                System.out.println(inputStream);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }*/
+        }
     }
 }

@@ -1,17 +1,22 @@
 package com.wea.local.model;
 
-
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.convert.Convert;
+import org.simpleframework.xml.convert.Converter;
+import org.simpleframework.xml.stream.InputNode;
+import org.simpleframework.xml.stream.OutputNode;
+import org.simpleframework.xml.transform.Transform;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Root(name = "CMAC_user_data")
+@Root(strict = false, name = "CMAC_user_data")
 public class CollectedUserData {
     @Element(name = "CMAC_user_time_received")
-    private LocalDateTime timeReceived;
+    private String timeReceived;
     @Element(name = "CMAC_user_time_displayed")
-    private LocalDateTime timeDisplayed;
+    private String timeDisplayed;
     @Element(name = "CMAC_user_location_received")
     private String locationReceived;
     @Element(name = "CMAC_user_location_displayed")
@@ -28,16 +33,15 @@ public class CollectedUserData {
      * when the message is received and sets the time the message was
      * received using the current time
      *
-     * @param locationReceived Geocode for the location of receipt
+     * @param locationReceived Geocode string for the location of receipt
      * @param message The message that was received
      */
     public CollectedUserData(String locationReceived, CMACMessageModel message) {
-        this.timeReceived = LocalDateTime.now();
+        this.timeReceived = LocalDateTime.now().toString();
         this.locationReceived = locationReceived;
         this.messageNumber = message.getMessageNumber();
         this.capIdentifier = message.getCapIdentifier();
     }
-
 
     public String getMessageNumber() {
         return messageNumber;
@@ -49,9 +53,14 @@ public class CollectedUserData {
      * Usage: This method should be called when the message is displayed to the user on the device.
      */
     public void setTimeDisplayed() {
-        this.timeDisplayed = LocalDateTime.now();
+        this.timeDisplayed = LocalDateTime.now().toString();
     }
 
+    /**
+     * Sets the location where the message was displayed on the device
+     *
+     * @param locationDisplayed Geocode string for the location of display
+     */
     public void setLocationDisplayed(String locationDisplayed) {
         this.locationDisplayed = locationDisplayed;
     }
