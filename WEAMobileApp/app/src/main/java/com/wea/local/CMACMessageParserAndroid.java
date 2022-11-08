@@ -10,10 +10,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 public class CMACMessageParserAndroid {
     public static void parseMessage() throws InterruptedException {
-        CMACMessageModel model = null;
+        CMACMessageModel cmacMessage = null;
         HttpURLConnection con;
 
         try {
@@ -21,19 +22,29 @@ public class CMACMessageParserAndroid {
             Serializer serializer = new Persister();
             InputStream inputStream = getMessage.openStream();
 
-            model = serializer.read(CMACMessageModel.class, inputStream);
+            cmacMessage = serializer.read(CMACMessageModel.class, inputStream);
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
-/*
-        CollectedUserData userData = new CollectedUserData(LocalDateTime.now(), "048151",
-                model.getMessageNumber(), model.getCapIdentifier());
+
+        /*
+        TODO: once we are able to get location data, the device's geocode should be passed as the
+        first parameter. Optionally, we could also remove the location parameter and put the logic
+        for determining the current location in the constructor
+         */
+        CollectedUserData userData = new CollectedUserData("048151", cmacMessage);
 
         //simulate short delay between receipt and display
-        Thread.sleep(15);
-        userData.setTimeDisplayed(LocalDateTime.now());
+        Random rand = new Random();
+        int sleepTime = rand.nextInt(30);
+        Thread.sleep(sleepTime);
+
+        //set when and where the message was displayed on the device
+        userData.setTimeDisplayed();
         userData.setLocationDisplayed("048151");
 
+        /*
         URL getUpload = null;
         try {
             URL upload = new URL("http://localhost:8080/wea/upload");
