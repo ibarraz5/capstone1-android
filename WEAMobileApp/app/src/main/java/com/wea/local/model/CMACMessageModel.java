@@ -1,10 +1,12 @@
 package com.wea.local.model;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 
-@Root
-public class WEAMessageModel {
+@Root(strict = false, name = "CMAC_Alert_Attributes")
+public class CMACMessageModel {
     @Element(name = "CMAC_message_number")
     private String messageNumber;
 
@@ -21,7 +23,7 @@ public class WEAMessageModel {
     private String capIdentifier;
 
     @Element(name = "CMAC_alert_info")
-    private WEAMessageAlertInfo alertInfo;
+    private CMACMessageAlertInfo alertInfo;
 
     public String getMessageNumber() {
         return messageNumber;
@@ -43,4 +45,7 @@ public class WEAMessageModel {
         return capIdentifier;
     }
 
+    public CMACMessageAlertInfo getAlertInfo() {
+        return alertInfo;
+    }
 }

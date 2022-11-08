@@ -1,21 +1,23 @@
 package com.wea.local.model;
 
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 
 import java.util.List;
-@Root
-@Element(name = "CMAC_alert_info")
-public class WEAMessageAlertInfo {
+
+@Root(strict = false)
+public class CMACMessageAlertInfo {
     @Element(name = "CMAC_expires_date_time")
     private String expires;
 
     @Element(name = "CMAC_sender_name")
     private String senderName;
 
-    @Element(name = "CMAC_Alert_Area")
-    //@JacksonXmlElementWrapper(useWrapping = false)
-    private List<com.wea.local.model.WEAMessageAlertArea> alertAreaList;
+    @ElementList(name = "CMAC_Alert_Area")
+    @Path("CMAC_Alert_Attributes/CMAC_alert_info/CMAC_Alert_Area")
+    private List<CMACMessageAlertArea> alertAreaList;
 
     public String getExpires() {
         return expires;
@@ -25,7 +27,7 @@ public class WEAMessageAlertInfo {
         return senderName;
     }
 
-    public List<com.wea.local.model.WEAMessageAlertArea> getAlertArea() {
+    public List<CMACMessageAlertArea> getAlertArea() {
         return alertAreaList;
     }
 }

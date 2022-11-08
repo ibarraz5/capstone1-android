@@ -9,13 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.wea.local.WEAMessageParserAndroid;
+import com.wea.local.CMACMessageParserAndroid;
 import com.wea.mobileapp.databinding.HomeFragmentBinding;
 
 public class HomeFragment extends Fragment {
 
     private HomeFragmentBinding binding;
-    private WEAMessageParserAndroid parse = new WEAMessageParserAndroid();
+    private CMACMessageParserAndroid parse = new CMACMessageParserAndroid();
 
     @Override
     public View onCreateView(
@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
             public void run() {
                 try {
                     //TODO: uncomment these lines once the parse is updated
-                    //parse.parseMessage();
+                    parse.parseMessage();
                 //} catch (InterruptedException e) {
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -1,29 +1,31 @@
 package com.wea.local;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.wea.local.model.CollectedUserData;
-import com.wea.local.model.WEAMessageModel;
+import com.wea.local.model.CMACMessageModel;
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
-public class WEAMessageParserAndroid {
+public class CMACMessageParserAndroid {
     public static void parseMessage() throws InterruptedException {
-        WEAMessageModel model = null;
+        CMACMessageModel model = null;
         HttpURLConnection con;
 
         try {
             URL getMessage = new URL("http://localhost:8080/wea/getMessage");
-            XmlMapper mapper = new XmlMapper();
-            model = mapper.readValue(getMessage, WEAMessageModel.class);
+            Serializer serializer = new Persister();
+            InputStream inputStream = getMessage.openStream();
+
+            model = serializer.read(CMACMessageModel.class, inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+/*
         CollectedUserData userData = new CollectedUserData(LocalDateTime.now(), "048151",
                 model.getMessageNumber(), model.getCapIdentifier());
 
@@ -61,6 +63,6 @@ public class WEAMessageParserAndroid {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 }
