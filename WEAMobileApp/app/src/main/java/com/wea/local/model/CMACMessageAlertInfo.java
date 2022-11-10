@@ -8,50 +8,6 @@ import java.util.List;
 
 @Xml(name = "CMAC_alert_info")
 public class CMACMessageAlertInfo {
-    //I miss fasterxml.jackson...
-    private static class CMACMessageAlertArea {
-        @PropertyElement(name = "CMAC_area_description")
-        private String areaDescription;
-
-        @PropertyElement(name = "CMAC_polygon")
-        private String polygon;
-
-        @PropertyElement(name = "CMAC_circle")
-        private String circle;
-
-        @Element(name = "CMAC_cmas_geocode")
-        private List<String> geocodeList;
-
-        public String getAreaDescription() {
-            return areaDescription;
-        }
-
-        public String getPolygon() {
-            return polygon;
-        }
-
-        public String getCircle() {
-            return circle;
-        }
-
-        public List<String> getGeocodeList() {
-            return geocodeList;
-        }
-    }
-
-    private static class CMACMessageAlertText {
-        @PropertyElement(name = "CMAC_text_language")
-        private String language;
-        @PropertyElement(name = "CMAC_short_text_alert_message")
-        private String shortMessage;
-        @PropertyElement(name = "CMAC_long_text_alert_message")
-        private String longMessage;
-
-        public String getLanguage() {
-            return language;
-        }
-    }
-
     @PropertyElement(name = "CMAC_category")
     private String category;
     @PropertyElement(name = "CMAC_severity")
@@ -66,12 +22,10 @@ public class CMACMessageAlertInfo {
     @PropertyElement(name = "CMAC_sender_name")
     private String senderName;
 
-    //@Element(name = "CMAC_Alert_Area")
-    ///@Path("CMAC_alert_info")
+    @Element(name = "CMAC_Alert_Area")
     private List<CMACMessageAlertArea> alertAreaList;
 
-    //@Element(name = "CMAC_Alert_Text")
-    //@Path("CMAC_alert_info")
+    @Element(name = "CMAC_Alert_Text")
     private List<CMACMessageAlertText> alertTextList;
 
     public String getCategory() {

@@ -1,29 +1,25 @@
 package com.wea.local.model;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.convert.Convert;
-import org.simpleframework.xml.convert.Converter;
-import org.simpleframework.xml.stream.InputNode;
-import org.simpleframework.xml.stream.OutputNode;
-import org.simpleframework.xml.transform.Transform;
+
+import com.tickaroo.tikxml.annotation.Element;
+import com.tickaroo.tikxml.annotation.Xml;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Root(strict = false, name = "CMAC_user_data")
+//@Xml(name = "CMAC_user_data")
 public class CollectedUserData {
-    @Element(name = "CMAC_user_time_received")
+    //@Element(name = "CMAC_user_time_received")
     private String timeReceived;
-    @Element(name = "CMAC_user_time_displayed")
+    //@Element(name = "CMAC_user_time_displayed")
     private String timeDisplayed;
-    @Element(name = "CMAC_user_location_received")
+    //@Element(name = "CMAC_user_location_received")
     private String locationReceived;
-    @Element(name = "CMAC_user_location_displayed")
+    //@Element(name = "CMAC_user_location_displayed")
     private String locationDisplayed;
-    @Element(name = "CMAC_message_number")
+    //@Element(name = "CMAC_message_number")
     private String messageNumber;
-    @Element(name = "CMAC_cap_identifier", required = false)
+    //@Element(name = "CMAC_cap_identifier")
     private String capIdentifier;
 
     public CollectedUserData() {}

@@ -6,8 +6,6 @@ import com.tickaroo.tikxml.TikXml;
 import com.wea.local.model.CollectedUserData;
 import com.wea.local.model.CMACMessageModel;
 
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -34,6 +32,7 @@ public class CMACMessageParserAndroid {
 
             BufferedSource source = Okio.buffer(Okio.source(inputStream));
             TikXml parser = new TikXml.Builder().exceptionOnUnreadXml(false).build();
+                    //.addTypeAdapter(new StringTypeAdapter()).build();
 
             cmacMessage = parser.read(source, CMACMessageModel.class);
         } catch (Exception e) {
@@ -63,7 +62,7 @@ public class CMACMessageParserAndroid {
         take place inside the method
          */
         userData.setLocationDisplayed("048151");
-
+/*
         URL getUpload = null;
         try {
             URL upload = new URL("http://" + address + ":8080/wea/upload");
@@ -91,6 +90,6 @@ public class CMACMessageParserAndroid {
             Log.i("Uploaded Message Number", uploadedData.getMessageNumber());
         } catch (Exception e) {
             e.printStackTrace();
-        }
-}
+        }*/
+    }
 }
