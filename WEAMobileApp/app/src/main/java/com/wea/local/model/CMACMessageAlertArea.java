@@ -1,7 +1,6 @@
 package com.wea.local.model;
 
 import com.tickaroo.tikxml.annotation.Element;
-import com.tickaroo.tikxml.annotation.ElementNameMatcher;
 import com.tickaroo.tikxml.annotation.PropertyElement;
 import com.tickaroo.tikxml.annotation.TextContent;
 import com.tickaroo.tikxml.annotation.Xml;

@@ -1,25 +1,23 @@
 package com.wea.local.model;
 
-
-import com.tickaroo.tikxml.annotation.Element;
+import com.tickaroo.tikxml.annotation.PropertyElement;
 import com.tickaroo.tikxml.annotation.Xml;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-//@Xml(name = "CMAC_user_data")
+@Xml(name = "CMAC_user_data")
 public class CollectedUserData {
-    //@Element(name = "CMAC_user_time_received")
+    @PropertyElement(name = "CMAC_user_time_received")
     private String timeReceived;
-    //@Element(name = "CMAC_user_time_displayed")
+    @PropertyElement(name = "CMAC_user_time_displayed")
     private String timeDisplayed;
-    //@Element(name = "CMAC_user_location_received")
+    @PropertyElement(name = "CMAC_user_location_received")
     private String locationReceived;
-    //@Element(name = "CMAC_user_location_displayed")
+    @PropertyElement(name = "CMAC_user_location_displayed")
     private String locationDisplayed;
-    //@Element(name = "CMAC_message_number")
+    @PropertyElement(name = "CMAC_message_number")
     private String messageNumber;
-    //@Element(name = "CMAC_cap_identifier")
+    @PropertyElement(name = "CMAC_cap_identifier")
     private String capIdentifier;
 
     public CollectedUserData() {}
@@ -39,8 +37,24 @@ public class CollectedUserData {
         this.capIdentifier = message.getCapIdentifier();
     }
 
-    public String getMessageNumber() {
-        return messageNumber;
+    public void setTimeReceived(String timeReceived) {
+        this.timeReceived = timeReceived;
+    }
+
+    public void setTimeDisplayed(String timeDisplayed) {
+        this.timeDisplayed = timeDisplayed;
+    }
+
+    public void setLocationReceived(String locationReceived) {
+        this.locationReceived = locationReceived;
+    }
+
+    public void setMessageNumber(String messageNumber) {
+        this.messageNumber = messageNumber;
+    }
+
+    public void setCapIdentifier(String capIdentifier) {
+        this.capIdentifier = capIdentifier;
     }
 
     /**
@@ -48,7 +62,7 @@ public class CollectedUserData {
      *
      * Usage: This method should be called when the message is displayed to the user on the device.
      */
-    public void setTimeDisplayed() {
+    public void setTimeDisplayedNow() {
         this.timeDisplayed = LocalDateTime.now().toString();
     }
 
@@ -59,5 +73,29 @@ public class CollectedUserData {
      */
     public void setLocationDisplayed(String locationDisplayed) {
         this.locationDisplayed = locationDisplayed;
+    }
+
+    public String getTimeReceived() {
+        return timeReceived;
+    }
+
+    public String getTimeDisplayed() {
+        return timeDisplayed;
+    }
+
+    public String getLocationReceived() {
+        return locationReceived;
+    }
+
+    public String getLocationDisplayed() {
+        return locationDisplayed;
+    }
+
+    public String getMessageNumber() {
+        return messageNumber;
+    }
+
+    public String getCapIdentifier() {
+        return capIdentifier;
     }
 }
