@@ -2,18 +2,25 @@ package com.wea.local;
 
 import android.util.Log;
 
+import com.tickaroo.tikxml.TikXml;
 import com.wea.local.model.CollectedUserData;
 import com.wea.local.model.CMACMessageModel;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import okio.Buffer;
+import okio.BufferedSource;
+import okio.Okio;
 
 public class CMACMessageParserAndroid {
     public static void parseMessage(String address) throws InterruptedException {
@@ -22,13 +29,19 @@ public class CMACMessageParserAndroid {
 
         try {
             URL getMessage = new URL("http://" + address + ":8080/wea/getMessage");
-            Serializer serializer = new Persister();
+
             InputStream inputStream = getMessage.openStream();
-            cmacMessage = serializer.read(CMACMessageModel.class, inputStream);
+
+            BufferedSource source = Okio.buffer(Okio.source(inputStream));
+            TikXml parser = new TikXml.Builder().exceptionOnUnreadXml(false).build();
+
+            cmacMessage = parser.read(source, CMACMessageModel.class);
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
+
+        System.out.println(cmacMessage.getMessageNumber());
 
         /*
         TODO: once we are able to get location data, the device's geocode should be passed as the

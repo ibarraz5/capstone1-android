@@ -1,27 +1,52 @@
 package com.wea.local.model;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
+import com.tickaroo.tikxml.annotation.Element;
+import com.tickaroo.tikxml.annotation.PropertyElement;
+import com.tickaroo.tikxml.annotation.Xml;
 
-@Root(strict = false, name = "CMAC_Alert_Attributes")
+@Xml(name = "CMAC_Alert_Attributes")
 public class CMACMessageModel {
-    @Element(name = "CMAC_message_number")
+    @PropertyElement(name = "CMAC_message_number")
     private String messageNumber;
 
-    @Element(name = "CMAC_sender")
+    @PropertyElement(name = "CMAC_sender")
     private String sender;
 
-    @Element(name = "CMAC_sent_date_time")
+    @PropertyElement(name = "CMAC_sent_date_time")
     private String sentDateTime;
 
-    @Element(name = "CMAC_message_type")
+    @PropertyElement(name = "CMAC_message_type")
     private String messageType;
 
-    @Element(name = "CMAC_cap_identifier")
+    @PropertyElement(name = "CMAC_cap_identifier")
     private String capIdentifier;
 
     @Element(name = "CMAC_alert_info")
     private CMACMessageAlertInfo alertInfo;
+
+    public void setMessageNumber(String messageNumber) {
+        this.messageNumber = messageNumber;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public void setSentDateTime(String sentDateTime) {
+        this.sentDateTime = sentDateTime;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+
+    public void setCapIdentifier(String capIdentifier) {
+        this.capIdentifier = capIdentifier;
+    }
+
+    public void setAlertInfo(CMACMessageAlertInfo alertInfo) {
+        this.alertInfo = alertInfo;
+    }
 
     public String getMessageNumber() {
         return messageNumber;

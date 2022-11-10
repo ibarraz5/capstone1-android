@@ -1,31 +1,25 @@
 package com.wea.local.model;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Path;
-import org.simpleframework.xml.Root;
+import com.tickaroo.tikxml.annotation.Element;
+import com.tickaroo.tikxml.annotation.PropertyElement;
+import com.tickaroo.tikxml.annotation.Xml;
 
 import java.util.List;
 
-@Root(strict = false)
+@Xml(name = "CMAC_alert_info")
 public class CMACMessageAlertInfo {
     //I miss fasterxml.jackson...
-    @Root(strict = false)
     private static class CMACMessageAlertArea {
-        @Element(name = "CMAC_area_description")
-        @Path("CMAC_Alert_Text")
+        @PropertyElement(name = "CMAC_area_description")
         private String areaDescription;
 
-        @Element(name = "CMAC_polygon")
-        @Path("CMAC_Alert_Text")
+        @PropertyElement(name = "CMAC_polygon")
         private String polygon;
 
-        @Element(name = "CMAC_circle")
-        @Path("CMAC_Alert_Text")
+        @PropertyElement(name = "CMAC_circle")
         private String circle;
 
-        @ElementList(name = "CMAC_cmas_geocode")
-        @Path("CMAC_Alert_Text")
+        @Element(name = "CMAC_cmas_geocode")
         private List<String> geocodeList;
 
         public String getAreaDescription() {
@@ -45,16 +39,12 @@ public class CMACMessageAlertInfo {
         }
     }
 
-    @Root(strict = false)
     private static class CMACMessageAlertText {
-        @Element(name = "CMAC_text_language")
-        @Path("CMAC_Alert_Text")
+        @PropertyElement(name = "CMAC_text_language")
         private String language;
-        @Element(name = "CMAC_short_text_alert_message")
-        @Path("CMAC_Alert_Text")
+        @PropertyElement(name = "CMAC_short_text_alert_message")
         private String shortMessage;
-        @Element(name = "CMAC_long_text_alert_message")
-        @Path("CMAC_Alert_Text")
+        @PropertyElement(name = "CMAC_long_text_alert_message")
         private String longMessage;
 
         public String getLanguage() {
@@ -62,45 +52,89 @@ public class CMACMessageAlertInfo {
         }
     }
 
-    @Element(name = "CMAC_category")
+    @PropertyElement(name = "CMAC_category")
     private String category;
-    @Element(name = "CMAC_severity")
+    @PropertyElement(name = "CMAC_severity")
     private String severity;
-    @Element(name = "CMAC_urgency")
+    @PropertyElement(name = "CMAC_urgency")
     private String urgency;
-    @Element(name = "CMAC_certainty")
+    @PropertyElement(name = "CMAC_certainty")
     private String certainty;
-    @Element(name = "CMAC_expires_date_time")
+    @PropertyElement(name = "CMAC_expires_date_time")
     private String expires;
 
-    @Element(name = "CMAC_sender_name")
+    @PropertyElement(name = "CMAC_sender_name")
     private String senderName;
 
-    @ElementList(name = "CMAC_Alert_Area")
+    //@Element(name = "CMAC_Alert_Area")
     ///@Path("CMAC_alert_info")
     private List<CMACMessageAlertArea> alertAreaList;
 
-    @ElementList(name = "CMAC_Alert_Text")
+    //@Element(name = "CMAC_Alert_Text")
     //@Path("CMAC_alert_info")
     private List<CMACMessageAlertText> alertTextList;
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
+    }
+
+    public String getUrgency() {
+        return urgency;
+    }
+
+    public void setUrgency(String urgency) {
+        this.urgency = urgency;
+    }
+
+    public String getCertainty() {
+        return certainty;
+    }
+
+    public void setCertainty(String certainty) {
+        this.certainty = certainty;
+    }
+
     public String getExpires() {
         return expires;
+    }
+
+    public void setExpires(String expires) {
+        this.expires = expires;
     }
 
     public String getSenderName() {
         return senderName;
     }
 
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
     public List<CMACMessageAlertArea> getAlertAreaList() {
         return alertAreaList;
+    }
+
+    public void setAlertAreaList(List<CMACMessageAlertArea> alertAreaList) {
+        this.alertAreaList = alertAreaList;
     }
 
     public List<CMACMessageAlertText> getAlertTextList() {
         return alertTextList;
     }
 
-    public String getLanguage(int index) {
-        return alertTextList.get(index).getLanguage();
+    public void setAlertTextList(List<CMACMessageAlertText> alertTextList) {
+        this.alertTextList = alertTextList;
     }
 }
