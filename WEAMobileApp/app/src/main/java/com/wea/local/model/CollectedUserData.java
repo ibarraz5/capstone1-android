@@ -57,22 +57,20 @@ public class CollectedUserData {
         this.capIdentifier = capIdentifier;
     }
 
+    public void setLocationDisplayed(String locationDisplayed) {
+        this.locationDisplayed = locationDisplayed;
+    }
+
     /**
      * Sets the current time as the time the device displayed the message
      *
      * Usage: This method should be called when the message is displayed to the user on the device.
-     */
-    public void setTimeDisplayedNow() {
-        this.timeDisplayed = LocalDateTime.now().toString();
-    }
-
-    /**
-     * Sets the location where the message was displayed on the device
      *
      * @param locationDisplayed Geocode string for the location of display
      */
-    public void setLocationDisplayed(String locationDisplayed) {
+    public void setDisplayData(String locationDisplayed) {
         this.locationDisplayed = locationDisplayed;
+        timeDisplayed = LocalDateTime.now().toString();
     }
 
     public String getTimeReceived() {
