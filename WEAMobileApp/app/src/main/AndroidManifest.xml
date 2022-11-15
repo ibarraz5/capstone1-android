@@ -12,14 +12,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MockApplication"
+        android:theme="@style/Theme.WEAMobileApp"
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.wea.mobileapp.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MockApplication.NoActionBar">
+            android:theme="@style/Theme.WEAMobileApp.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
