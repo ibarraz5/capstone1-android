@@ -91,4 +91,46 @@ public class CMACMessageAlertInfo {
     public void setAlertTextList(List<CMACMessageAlertText> alertTextList) {
         this.alertTextList = alertTextList;
     }
+
+    /**
+     * Gets the short message of the chosen language, or the english
+     * message if the target language is not found
+     *
+     * @param language The target language
+     * @return The CMAC_short_text_alert_message in the chosen language
+     */
+    public String getShortMessage(String language) {
+        //indexing for english alert if target language is not found
+        int english = 0;
+        for (int i = 0; i < alertTextList.size(); i++) {
+            if (alertTextList.get(i).getLanguage().equalsIgnoreCase(language)) {
+                return alertTextList.get(i).getShortMessage();
+            } else if (alertTextList.get(i).getLanguage().equalsIgnoreCase("english")) {
+                english = i;
+            }
+        }
+
+        return alertTextList.get(english).getShortMessage();
+    }
+
+    /**
+     * Gets the long message of the chosen language, or the english
+     * message if the target language is not found
+     *
+     * @param language The target language
+     * @return The CMAC_long_text_alert_message in the chosen language
+     */
+    public String getLongMessage(String language) {
+        //indexing for english alert if target language is not found
+        int english = 0;
+        for (int i = 0; i < alertTextList.size(); i++) {
+            if (alertTextList.get(i).getLanguage().equalsIgnoreCase(language)) {
+                return alertTextList.get(i).getLongMessage();
+            } else if (alertTextList.get(i).getLanguage().equalsIgnoreCase("english")) {
+                english = i;
+            }
+        }
+
+        return alertTextList.get(english).getLongMessage();
+    }
 }

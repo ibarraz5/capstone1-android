@@ -24,12 +24,20 @@ public class CMACMessageAlertText {
         return shortMessage;
     }
 
+    /**
+     * Returns the long message with all excess whitepsace removed
+     * @return CMAC_long_text_alert_message
+     */
     public void setShortMessage(String shortMessage) {
-        this.shortMessage = shortMessage;
+        this.shortMessage = shortMessage.replaceAll("\\s+", " ");
     }
 
+    /**
+     * Returns the long message with all excess whitepsace removed
+     * @return CMAC_long_text_alert_message
+     */
     public String getLongMessage() {
-        return longMessage;
+        return longMessage.replaceAll("\\s+", " ");
     }
 
     public void setLongMessage(String longMessage) {

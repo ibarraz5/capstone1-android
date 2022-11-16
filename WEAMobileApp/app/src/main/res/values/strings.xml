@@ -9,4 +9,5 @@
 
     <string name="home_greeting">AT&amp;T WEA Alert Home</string>
     <string name="no_history">No Alerts In History</string>
+    <string name="ok">OK</string>
 </resources>

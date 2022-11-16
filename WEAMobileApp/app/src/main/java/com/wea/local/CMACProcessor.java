@@ -90,8 +90,8 @@ public class CMACProcessor {
 
         /*
         TODO: once we are able to get location data, the device's geocode should be passed as the
-        first parameter. Optionally, we could also remove the location parameter and put the logic
-        for determining the current location in the constructor
+         first parameter. Optionally, we could also remove the location parameter and put the logic
+         for determining the current location in the constructor
          */
         userData = new CollectedUserData("048151", cmacMessage);
 
@@ -113,8 +113,10 @@ public class CMACProcessor {
             return false;
         }
 
-        ///TODO: like the constructor, replace this parameter with the current geocode string, or simply move the
-        // logic to get the geocode into the method
+        Log.i("Here", "here");
+
+        //TODO: like the constructor, replace this parameter with the current geocode string, or simply move the logic
+        // to get the geocode into the method
         userData.setDisplayData("048151");
 
         displayDatSet = true;
@@ -145,10 +147,12 @@ public class CMACProcessor {
             parser.write(sink, userData);
             con.getOutputStream().write(sink.buffer().readByteArray());
 
-            //Get the location url for this upload: that is the endpoint where this data can be found
+            //Get the location url for this upload: that is, the endpoint where this data can be found
             Map<String, List<String>> map = con.getHeaderFields();
             String locationUrl = map.get("Location").get(0).replace("localhost", SERVER_IP);
-            //TODO: store this value in the database?
+
+            //TODO: store locationUrl in the database here
+
             Log.i("Upload Location", locationUrl);
         } catch (Exception e) {
             e.printStackTrace();
