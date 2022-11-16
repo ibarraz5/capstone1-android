@@ -1,7 +1,7 @@
 package com.wea.mobileapp;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -145,12 +145,15 @@ public class MainActivity extends AppCompatActivity {
      * @return A WEA AlertDialog
      */
     private AlertDialog getWeaAlertDialog(CMACMessageModel[] cmacMessage, View view) {
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.emergency_alert);
+
         AlertDialog.Builder weaAlertBuilder = new AlertDialog.Builder(MainActivity.this)
                 .setTitle(cmacMessage[0].getShortMessage("english"))
                 .setIcon(R.drawable.alert_icon)
                 .setMessage(cmacMessage[0].getLongMessage("english"))
                 .setCancelable(false)
                 .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    mediaPlayer.stop();
                     //Handle device data upload on close
                     AtomicBoolean success = new AtomicBoolean(false);
 
@@ -183,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
         weaAlertDialog.setOnShowListener(dialogInterface -> {
             //Handle setting device on message display
             CMACProcessor.setDisplayData(MainActivity.this, cmacMessage[0]);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
         });
 
         return weaAlertDialog;
