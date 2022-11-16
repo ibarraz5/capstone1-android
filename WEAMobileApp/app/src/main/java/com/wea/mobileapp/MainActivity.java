@@ -1,6 +1,7 @@
 package com.wea.mobileapp;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -8,6 +9,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private AlertDialog getWeaAlertDialog(CMACMessageModel[] cmacMessage, View view) {
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.emergency_alert);
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         AlertDialog.Builder weaAlertBuilder = new AlertDialog.Builder(MainActivity.this)
                 .setTitle(cmacMessage[0].getShortMessage("english"))
@@ -153,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(cmacMessage[0].getLongMessage("english"))
                 .setCancelable(false)
                 .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    vibrator.cancel();
                     mediaPlayer.stop();
                     //Handle device data upload on close
                     AtomicBoolean success = new AtomicBoolean(false);
@@ -186,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
         weaAlertDialog.setOnShowListener(dialogInterface -> {
             //Handle setting device on message display
             CMACProcessor.setDisplayData(MainActivity.this, cmacMessage[0]);
+            //set vibration and sound effects
+            long[] vibrationPatter = {200, 1900, 150};
+            vibrator.vibrate(VibrationEffect.createWaveform(vibrationPatter, 0));
             mediaPlayer.setLooping(true);
             mediaPlayer.start();
         });
