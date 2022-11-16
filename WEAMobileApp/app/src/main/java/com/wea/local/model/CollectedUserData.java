@@ -3,7 +3,10 @@ package com.wea.local.model;
 import com.tickaroo.tikxml.annotation.PropertyElement;
 import com.tickaroo.tikxml.annotation.Xml;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Xml(name = "CMAC_user_data")
 public class CollectedUserData {
@@ -31,7 +34,7 @@ public class CollectedUserData {
      * @param message The message that was received
      */
     public CollectedUserData(String locationReceived, CMACMessageModel message) {
-        this.timeReceived = LocalDateTime.now().toString();
+        this.timeReceived = Instant.now().toString();
         this.locationReceived = locationReceived;
         this.messageNumber = message.getMessageNumber();
         this.capIdentifier = message.getCapIdentifier();
@@ -70,7 +73,7 @@ public class CollectedUserData {
      */
     public void setDisplayData(String locationDisplayed) {
         this.locationDisplayed = locationDisplayed;
-        timeDisplayed = LocalDateTime.now().toString();
+        timeDisplayed = Instant.now().toString();
     }
 
     public String getTimeReceived() {

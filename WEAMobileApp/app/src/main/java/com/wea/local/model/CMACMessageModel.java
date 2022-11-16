@@ -71,4 +71,28 @@ public class CMACMessageModel {
     public CMACMessageAlertInfo getAlertInfo() {
         return alertInfo;
     }
+
+    /**
+     * Returns the alerts long message of the chosen language.
+     * If the language is not found, the alert defaults to
+     * the English message
+     *
+     * @param language The language to display
+     * @return CMAC_short_text_alert_message in the chosen language
+     */
+    public  String getShortMessage(String language) {
+        return alertInfo.getShortMessage(language);
+    }
+
+    /**
+     * Returns the alerts long message of the chosen language.
+     * If the language is not found, the alert defaults to
+     * the English message
+     *
+     * @param language The language to display
+     * @return CMAC_long_test_alert_message in the chosen language
+     */
+    public  String getLongMessage(String language) {
+        return alertInfo.getLongMessage(language);
+    }
 }
