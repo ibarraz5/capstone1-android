@@ -117,7 +117,7 @@ public class CMACProcessor {
 
         //TODO: like the constructor, replace this parameter with the current geocode string, or simply move the logic
         // to get the geocode into the method
-        userData.setDisplayData("048151");
+        userData.setDisplayData("048151", cmacMessage);
 
         displayDatSet = true;
         return true;
