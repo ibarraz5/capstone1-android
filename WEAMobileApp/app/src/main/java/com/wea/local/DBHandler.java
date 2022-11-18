@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.wea.local.model.CMACMessageModel;
+
 import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -41,20 +43,16 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
     }
 
-    public ArrayList<CMACModal> readCMACS() {
+    public ArrayList<CMACMessageModel> readCMACS() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursorCMAC = db.rawQuery("SELECT * FROM " + CMAC_MESSAGE_TABLE_NAME, null);
 
-        ArrayList<CMACModal> cmacModalArrayList = new ArrayList<>();
+        ArrayList<CMACMessageModel> cmacModalArrayList = new ArrayList<>();
 
         if (cursorCMAC.moveToFirst()) {
             do {
-                cmacModalArrayList.add(new CMACModal(cursorCMAC.getString(1),
-                        cursorCMAC.getString(2),
-                        cursorCMAC.getString(3),
-                        cursorCMAC.getString(4),
-                        cursorCMAC.getString(5)));
+                cmacModalArrayList.add(new CMACMessageModel());
             } while (cursorCMAC.moveToNext());
         }
 
