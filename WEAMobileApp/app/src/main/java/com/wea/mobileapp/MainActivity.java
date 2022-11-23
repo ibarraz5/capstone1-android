@@ -26,6 +26,7 @@ import com.wea.local.DBHandler;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -103,10 +104,15 @@ public class MainActivity extends AppCompatActivity {
                 Thread thread = new Thread(() -> {
                     try {
                         cmacMessage[0] = CMACProcessor.parseMessage();
+                        HistoryFragment.setText(cmacMessage[0].getShortMessage("english"));
+                        System.out.println("PRINTING OUT CMAC MESSAGE");
+                        System.out.println(cmacMessage[0].getShortMessage("english"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
+
+
 
                 thread.start();
                 try {
@@ -200,4 +206,6 @@ public class MainActivity extends AppCompatActivity {
 
         return weaAlertDialog;
     }
+
+//    private
 }
