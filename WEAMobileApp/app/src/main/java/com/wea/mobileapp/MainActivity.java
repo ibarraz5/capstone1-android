@@ -28,6 +28,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private ArrayList messageArr = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,9 +107,11 @@ public class MainActivity extends AppCompatActivity {
                 Thread thread = new Thread(() -> {
                     try {
                         cmacMessage[0] = CMACProcessor.parseMessage();
-                        HistoryFragment.setText(cmacMessage[0].getShortMessage("english"));
-                        System.out.println("PRINTING OUT CMAC MESSAGE");
-                        System.out.println(cmacMessage[0].getShortMessage("english"));
+                        System.out.println("PRINTING OUT CMAC MESSAGE 1");
+                        messageArr.add(cmacMessage[0].getShortMessage("english"));
+                        System.out.println(messageArr.get(0));
+                        HistoryFragment.setText(messageArr);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -15,10 +15,13 @@ import com.wea.mobileapp.databinding.HistoryFragmentBinding;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class HistoryFragment extends Fragment {
 
     private HistoryFragmentBinding binding;
     private static TextView tv;
+    private static ArrayList  history = new ArrayList<>();
 
     @Override
     public View onCreateView(
@@ -27,27 +30,27 @@ public class HistoryFragment extends Fragment {
     ) {
 
         binding = HistoryFragmentBinding.inflate(inflater, container, false);
-        if (savedInstanceState != null){
-            tv.setText(savedInstanceState.getCharSequence("ourKey"));
-        }
         return binding.getRoot();
 
     }
 
 //    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState){
-//        super.onCreate(savedInstanceState);
-//        if (savedInstanceState != null){
-//            tv.setText(savedInstanceState.getCharSequence("ourKey"));
-//        }
-//    }
+////    public void onCreate(@Nullable Bundle savedInstanceState){
+////        super.onCreate(savedInstanceState);
+////        if (savedInstanceState != null){
+////            tv.setText(savedInstanceState.getCharSequence("ourKey"));
+////        }
+////    }
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        System.out.println("INSIDE ONCREATE HISTORY");
         super.onCreate(savedInstanceState);
+        System.out.println(savedInstanceState);
         if (savedInstanceState != null){
-            tv.setText(savedInstanceState.getCharSequence("ourKey"));
+            history = savedInstanceState.getCharSequenceArrayList("historyMessages");
+            System.out.println(history.get(0));
         }
     }
 
@@ -59,8 +62,9 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putCharSequence("ourKey", tv.getText());
+        System.out.println("INSIDE ONSAVEINSTANCE");
+        outState.putStringArrayList("historyMessages", history);
+        System.out.println(outState);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -81,7 +85,15 @@ public class HistoryFragment extends Fragment {
         binding = null;
     }
 
-    public static void setText(String text) {
+    public static void setText(ArrayList messages) {
+        String text = "";
+        history = messages;
+        System.out.println("PRINTING OUT CMAC MESSAGE 2");
+        for (int i = 0; i <= messages.size() - 1; i++){
+            text += messages.get(i).toString();
+            text += "\n\n";
+        }
+
         System.out.println("INSIDE SET TEXT");
         System.out.println(text);
         if (tv != null){
