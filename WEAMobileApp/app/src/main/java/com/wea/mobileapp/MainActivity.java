@@ -2,6 +2,7 @@ package com.wea.mobileapp;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -38,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private ArrayList messageArr = new ArrayList();
+    private DBHandler dbHandler = new DBHandler(getBaseContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DBHandler dbHandler = new DBHandler(MainActivity.this);
 
         super.onCreate(savedInstanceState);
 
@@ -100,18 +101,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final CMACMessageModel[] cmacMessage = new CMACMessageModel[1];
+
+
                 Snackbar.make(view, "Retrieving message from server...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 //get a message
                 Thread thread = new Thread(() -> {
                     try {
-                        cmacMessage[0] = CMACProcessor.parseMessage();
-                        System.out.println("PRINTING OUT CMAC MESSAGE 1");
-                        messageArr.add(cmacMessage[0].getShortMessage("english"));
-                        System.out.println(messageArr.get(0));
-                        HistoryFragment.setText(messageArr);
-
+                        dbHandler.getWritableDatabase();
+                        dbHandler.addNewCMACAlert(cmacMessage[0].getMessageNumber());
+                        HistoryFragment.setText(dbHandler.readCMACS());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
