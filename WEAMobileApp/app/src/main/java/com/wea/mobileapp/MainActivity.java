@@ -1,19 +1,39 @@
 package com.wea.mobileapp;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+//import android.location.LocationRequest;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -27,6 +47,7 @@ import com.wea.local.DBHandler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private ArrayList messageArr = new ArrayList();
+    private LocationRequest locationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
         CMACProcessor.setServerIp(getApplicationContext());
 
         binding.getMessageButton.setOnClickListener(getMessage());
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(2000);
+
     }
 
     @Override
@@ -118,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-
                 thread.start();
                 try {
                     thread.join();
@@ -147,15 +174,115 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 getWeaAlertDialog(cmacMessage, view).show();
+
+                getGPSLocation();
+
             }
         };
     }
 
     /**
+     * Method to get the GPS Location of the device.
+     * CURRENTLY THE LOCATION IS PRINTED TO LOGCAT.
+     */
+    private void getGPSLocation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (isGPSEnabled()) {
+
+                    LocationServices.getFusedLocationProviderClient(MainActivity.this).requestLocationUpdates(locationRequest, new LocationCallback() {
+                        @Override
+                        public void onLocationResult(@NonNull LocationResult locationResult) {
+                            super.onLocationResult(locationResult);
+                            LocationServices.getFusedLocationProviderClient(MainActivity.this).removeLocationUpdates(this);
+
+                            if (locationResult != null && locationResult.getLocations().size() > 0){
+                                int index = locationResult.getLocations().size() - 1;
+                                double latitude = locationResult.getLocations().get(index).getLatitude();
+                                double longitude = locationResult.getLocations().get(index).getLongitude();
+
+                                System.out.println("GETTING DEVICE LOCATION");
+                                System.out.println(latitude);
+                                System.out.println(longitude);
+                            }
+
+                        }
+                    }, Looper.getMainLooper());
+                } else {
+                    turnOnGPS();
+                }
+            } else {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+    }
+
+    /**
+     * Checks to see if GPS is enabled on Android device
+     * @return A boolean for gps enabled
+     */
+    private boolean isGPSEnabled() {
+        LocationManager locationManager = null;
+        boolean isEnabled = false;
+
+        if (locationManager == null) {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        }
+
+        isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        return isEnabled;
+    }
+
+    /**
+     * Helper method to give user a dialog box to turn on
+     * their location services if it is determined they are
+     * turned off.
+     */
+    private void turnOnGPS() {
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext())
+                .checkLocationSettings(builder.build());
+
+        result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+
+                try {
+                    LocationSettingsResponse response = task.getResult(ApiException.class);
+                    Toast.makeText(MainActivity.this, "GPS is already tured on", Toast.LENGTH_SHORT).show();
+
+                } catch (ApiException e) {
+
+                    switch (e.getStatusCode()) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+
+                            try {
+                                ResolvableApiException resolvableApiException = (ResolvableApiException) e;
+                                resolvableApiException.startResolutionForResult(MainActivity.this, 2);
+                            } catch (IntentSender.SendIntentException ex) {
+                                ex.printStackTrace();
+                            }
+                            break;
+
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            //Device does not have location
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    /**
      * Creates and returns an AlertDialog that displays a WEA message. The Dialog also handles setting the user data
      * for when the alert is displayed as well as upload the data to the server
+     *
      * @param cmacMessage The CMAC Message to be displayed, this array should contain only one element
-     * @param view The view hosting the AlertDialog
+     * @param view        The view hosting the AlertDialog
      * @return A WEA AlertDialog
      */
     private AlertDialog getWeaAlertDialog(CMACMessageModel[] cmacMessage, View view) {
