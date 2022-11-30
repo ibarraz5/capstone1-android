@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-//import android.location.LocationRequest;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +38,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.snatik.polygon.Point;
+import com.snatik.polygon.Polygon;
 import com.wea.local.CMACProcessor;
 import com.wea.local.model.CMACMessageModel;
 import com.wea.mobileapp.databinding.ActivityMainBinding;
@@ -46,11 +47,9 @@ import com.wea.local.DBHandler;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -177,6 +176,10 @@ public class MainActivity extends AppCompatActivity {
 
                 getGPSLocation();
 
+                boolean inside = isInsideArea();
+                System.out.println("CHECKING INSIDE POLYGON");
+                System.out.println(inside);
+
             }
         };
     }
@@ -196,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                             super.onLocationResult(locationResult);
                             LocationServices.getFusedLocationProviderClient(MainActivity.this).removeLocationUpdates(this);
 
-                            if (locationResult != null && locationResult.getLocations().size() > 0){
+                            if (locationResult != null && locationResult.getLocations().size() > 0) {
                                 int index = locationResult.getLocations().size() - 1;
                                 double latitude = locationResult.getLocations().get(index).getLatitude();
                                 double longitude = locationResult.getLocations().get(index).getLongitude();
@@ -219,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Checks to see if GPS is enabled on Android device
+     *
      * @return A boolean for gps enabled
      */
     private boolean isGPSEnabled() {
@@ -275,6 +279,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean isInsideArea() {
+
+        Double[] xCoords = {40.842226, 40.829498, 40.833394, 40.84768, 40.858716};
+        Double[] yCoords = {14.211753, 14.229262, 14.26617, 14.278701, 14.27715};
+        Double[] myPoint = {40.8518, 14.2681};
+
+        Polygon.Builder p = new Polygon.Builder();
+
+        for (int i = 0; i < xCoords.length; i++) {
+            p.addVertex(new Point(xCoords[i], yCoords[i]));
+        }
+        p.close();
+        Polygon poly = p.build();
+
+        Point point = new Point(myPoint[0], myPoint[1]);
+
+        return poly.contains(point);
     }
 
     /**
