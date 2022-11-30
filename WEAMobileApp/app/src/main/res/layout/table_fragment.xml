@@ -8,11 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        android:layout_margin="20dp"
+        android:layout_marginTop="160dp"
         android:collapseColumns="0">
 
-        <include layout="@layout/row_fragment" />
         <include layout="@layout/heading_fragment" />
+        <include layout="@layout/row_fragment" />
     </TableLayout>
 
 

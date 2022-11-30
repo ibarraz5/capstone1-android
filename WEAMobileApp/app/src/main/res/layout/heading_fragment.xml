@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerInParent="true"
     android:layout_below="@+id/HomeFragment"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_centerInParent="true"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
 
     <TableRow
-        android:background="@android:color/darker_gray"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        android:background="@android:color/darker_gray"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:gravity="center_horizontal"
+            android:padding="10sp"
             android:text="@string/col1"
-            android:padding="10sp"
             android:textSize="14sp"
-            android:layout_weight="4"
-            android:gravity="center_horizontal"
-            />
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:gravity="center_horizontal"
+            android:padding="10sp"
             android:text="@string/col2"
-            android:padding="10sp"
             android:textSize="14sp"
-            android:layout_weight="4"
-            android:gravity="center_horizontal"
-            />
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/col3"
-            android:padding="10sp"
-            android:textSize="14sp"
             android:layout_weight="4"
             android:gravity="center_horizontal"
-            />
+            android:padding="10sp"
+            android:text="@string/col3"
+            android:textSize="14sp" />
 
     </TableRow>
 
