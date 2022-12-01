@@ -76,7 +76,7 @@ public class CMACProcessor {
         CMACMessageModel cmacMessage = null;
 
         try {
-            URL getMessage = new URL("http://" + SERVER_IP + ":8080/wea/getMessage");
+            URL getMessage = new URL("http://" + SERVER_IP + ":8080/wea/api/getMessage");
             InputStream inputStream = getMessage.openStream();
 
             BufferedSource source = Okio.buffer(Okio.source(inputStream));
@@ -136,7 +136,7 @@ public class CMACProcessor {
         }
 
         try {
-            URL upload = new URL("http://" + SERVER_IP + ":8080/wea/upload");
+            URL upload = new URL("http://" + SERVER_IP + ":8080/wea/api/upload");
             HttpURLConnection con = (HttpURLConnection) upload.openConnection();
             con.setRequestMethod("PUT");
             con.setRequestProperty("Content-Type", "application/xml");
