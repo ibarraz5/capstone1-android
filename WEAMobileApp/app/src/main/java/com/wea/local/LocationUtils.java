@@ -30,6 +30,8 @@ import com.snatik.polygon.Polygon;
 
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class LocationUtils {
 
     private static Activity globalActivity;
@@ -151,16 +153,23 @@ public class LocationUtils {
      *
      * @return boolean for if point is inside polygon.
      */
-    public static boolean isInsideArea() {
+    public static boolean isInsideArea(String coords, Double[] myPoint) {
 
-        Double[] xCoords = {40.842226, 40.829498, 40.833394, 40.84768, 40.858716};
-        Double[] yCoords = {14.211753, 14.229262, 14.26617, 14.278701, 14.27715};
-        Double[] myPoint = {40.8518, 14.2681};
+        String[] coordsSplit = coords.split(" ");
+
+        ArrayList x = new ArrayList();
+        ArrayList y = new ArrayList();
+
+        for (int i = 0; i < coordsSplit.length; i++){
+            String[] s = coordsSplit[i].split(",");
+            x.add(Double.parseDouble(s[0]));
+            y.add(Double.parseDouble(s[1]));
+        }
 
         Polygon.Builder p = new Polygon.Builder();
 
-        for (int i = 0; i < xCoords.length; i++) {
-            p.addVertex(new Point(xCoords[i], yCoords[i]));
+        for (int i = 0; i < x.size(); i++) {
+            p.addVertex(new Point((Double)x.get(i), (Double)y.get(i)));
         }
         p.close();
         Polygon poly = p.build();

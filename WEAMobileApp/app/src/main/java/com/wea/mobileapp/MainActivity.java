@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         CMACProcessor.setServerIp(getApplicationContext());
 
         binding.getMessageButton.setOnClickListener(getMessage());
-
     }
 
     @Override
@@ -149,7 +147,10 @@ public class MainActivity extends AppCompatActivity {
 
                 LocationUtils.getGPSLocation(MainActivity.this, MainActivity.this);
 
-                boolean inside = LocationUtils.isInsideArea();
+                String coords = "40.842226,14.211753 40.829498,14.229262, 40.833394,14.26617 40.84768,14.278701 40.858716,14.27715";
+                Double[] myPoint = {40.8518, 14.2681};
+
+                boolean inside = LocationUtils.isInsideArea(coords, myPoint);
                 System.out.println("CHECKING INSIDE POLYGON");
                 System.out.println(inside);
 
