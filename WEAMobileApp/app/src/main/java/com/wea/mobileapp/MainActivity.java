@@ -27,6 +27,7 @@ import com.wea.local.DBHandler;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TableRow;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -156,6 +157,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+    }
+
+    private void loadCMAC() {
+        CMACMessageModel[] cmacMessage;
+        dbHandler.getReadableDatabase();
+        cmacMessage = dbHandler.readCMACS().toArray(new CMACMessageModel[0]);
+        int rows = cmacMessage.length;
+
+        for(int i = 0; i < rows; i++){
+            final TableRow row = new TableRow(this);
+            row.setId(i);
+        }
     }
 
     /**
