@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,16 +20,15 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.wea.local.CMACProcessor;
+import com.wea.local.LocationUtils;
 import com.wea.local.model.CMACMessageModel;
 import com.wea.mobileapp.databinding.ActivityMainBinding;
 import com.wea.local.DBHandler;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -118,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-
                 thread.start();
                 try {
                     thread.join();
@@ -147,6 +144,16 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 getWeaAlertDialog(cmacMessage, view).show();
+
+                LocationUtils.getGPSLocation(MainActivity.this, MainActivity.this);
+
+                String coords = "40.842226,14.211753 40.829498,14.229262, 40.833394,14.26617 40.84768,14.278701 40.858716,14.27715";
+                Double[] myPoint = {40.8518, 14.2681};
+
+                boolean inside = LocationUtils.isInsideArea(coords, myPoint);
+                System.out.println("CHECKING INSIDE POLYGON");
+                System.out.println(inside);
+
             }
         };
     }
@@ -154,8 +161,9 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Creates and returns an AlertDialog that displays a WEA message. The Dialog also handles setting the user data
      * for when the alert is displayed as well as upload the data to the server
+     *
      * @param cmacMessage The CMAC Message to be displayed, this array should contain only one element
-     * @param view The view hosting the AlertDialog
+     * @param view        The view hosting the AlertDialog
      * @return A WEA AlertDialog
      */
     private AlertDialog getWeaAlertDialog(CMACMessageModel[] cmacMessage, View view) {
