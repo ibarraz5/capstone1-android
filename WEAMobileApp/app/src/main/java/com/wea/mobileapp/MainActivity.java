@@ -2,9 +2,9 @@ package com.wea.mobileapp;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,13 +20,16 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.wea.local.CMACProcessor;
+import com.wea.local.LocationUtils;
 import com.wea.local.model.CMACMessageModel;
 import com.wea.mobileapp.databinding.ActivityMainBinding;
 import com.wea.local.DBHandler;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TableRow;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,10 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private ArrayList messageArr = new ArrayList();
+    private DBHandler dbHandler = new DBHandler(getBaseContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DBHandler dbHandler = new DBHandler(MainActivity.this);
 
         super.onCreate(savedInstanceState);
 
@@ -96,17 +100,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final CMACMessageModel[] cmacMessage = new CMACMessageModel[1];
+
+
                 Snackbar.make(view, "Retrieving message from server...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
                 //get a message
                 Thread thread = new Thread(() -> {
                     try {
-                        cmacMessage[0] = CMACProcessor.parseMessage();
+                        dbHandler.getWritableDatabase();
+                        dbHandler.addNewCMACAlert(cmacMessage[0].getMessageNumber());
+                        HistoryFragment.setText(dbHandler.readCMACS());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
+
 
                 thread.start();
                 try {
@@ -136,15 +145,38 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 getWeaAlertDialog(cmacMessage, view).show();
+
+                LocationUtils.getGPSLocation(MainActivity.this, MainActivity.this);
+
+                String coords = "40.842226,14.211753 40.829498,14.229262, 40.833394,14.26617 40.84768,14.278701 40.858716,14.27715";
+                Double[] myPoint = {40.8518, 14.2681};
+
+                boolean inside = LocationUtils.isInsideArea(coords, myPoint);
+                System.out.println("CHECKING INSIDE POLYGON");
+                System.out.println(inside);
+
             }
         };
+    }
+
+    private void loadCMAC() {
+        CMACMessageModel[] cmacMessage;
+        dbHandler.getReadableDatabase();
+        cmacMessage = dbHandler.readCMACS().toArray(new CMACMessageModel[0]);
+        int rows = cmacMessage.length;
+
+        for(int i = 0; i < rows; i++){
+            final TableRow row = new TableRow(this);
+            row.setId(i);
+        }
     }
 
     /**
      * Creates and returns an AlertDialog that displays a WEA message. The Dialog also handles setting the user data
      * for when the alert is displayed as well as upload the data to the server
+     *
      * @param cmacMessage The CMAC Message to be displayed, this array should contain only one element
-     * @param view The view hosting the AlertDialog
+     * @param view        The view hosting the AlertDialog
      * @return A WEA AlertDialog
      */
     private AlertDialog getWeaAlertDialog(CMACMessageModel[] cmacMessage, View view) {
@@ -200,4 +232,6 @@ public class MainActivity extends AppCompatActivity {
 
         return weaAlertDialog;
     }
+
+//    private
 }
